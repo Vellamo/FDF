@@ -6,7 +6,7 @@
 #    By: lharvey <lharvey@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/01 11:41:06 by lharvey           #+#    #+#              #
-#    Updated: 2020/01/06 11:17:01 by lharvey          ###   ########.fr        #
+#    Updated: 2020/02/06 15:42:31 by lharvey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,15 +33,15 @@ OBJECTS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -Werror -c $(SRCS)
-	ar rcs $(NAME) $(OBJECTS)
+	@gcc -Wall -Wextra -Werror -c $(SRCS)
+	@ar rcs $(NAME) $(OBJECTS)
 
 .PHONY: clean fclean re
 
 clean:
-	rm -f $(OBJECTS)
+	@rm -f $(OBJECTS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
