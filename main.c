@@ -15,15 +15,34 @@
 
 int main()
 {
-	void *mlx_ptr; /* connection login to the graphical server */
-	void *win_ptr; /* an identifier for the window (MiniLibX can open many) */
-	
+	void			*mlx_ptr; /* connection login to the graphical server */
+	void			*win_ptr; /* an identifier for the window (MiniLibX can open many) */
+	void			*image;
+	int				pixel_bits;
+	int				line_bytes;
+	int				endian;
+	int				*buffer_32bit;
+	int				colour;
+	unsigned int	x;
+	unsigned int	y;
+
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "Basic Program");
+	image = mlx_new_image(mlx_ptr, 500, 500);
+	colour = 0x66023C;
+	x = 0;
+	y = 0;
+
+	buffer_32bit = (int *)mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian);
+	line_bytes /= 4;
+	
+	for(y = 0; y < 250; ++y)
+	for(x = 0; x < 250; ++x)
+	{
+    	buffer_32bit[(y * line_bytes) + x] = colour;
+	}
+	mlx_put_image_to_window(mlx_ptr, win_ptr, image, 0, 0);
 //	mlx_pixel_put(mlx_ptr, win_ptr, 250, 250, 0xFFFFFF);
 //	mlx_key_hook(win_ptr, deal_key, (void *)0);
 	mlx_loop(mlx_ptr); /* asks OS to do thing. This function also does the event management. */
-
-
-	
 }
