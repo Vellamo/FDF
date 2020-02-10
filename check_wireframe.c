@@ -30,18 +30,24 @@ int	word_count(char *string)
 
 int	check_wireframe(int fd)
 {
-	int		wire_height;
-	int		wire_width;
+	int		wire_y;
+	int		wire_x;
 	char	*line;
+	char	**line_array;
+	int		width_check;
 
 	*line = 0;
 	while ((get_next_line(fd, &line)) != 0)
 	{
-		if ((wire_width = word_count(line)) == 0)
+		if ((wire_x = word_count(line)) == 0)
 			return (-1);
-		++wire_height;
+		line_array[wire_y] = line;
+		if (wire_y != 0)
+			if (width_check != wire_x)
+				return (0);
+		++wire_y;
+		width_check = wire_x;
 	}
-
-
+	
 
 }
