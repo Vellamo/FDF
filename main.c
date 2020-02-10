@@ -11,16 +11,36 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include "mlx.h"
 #include "libft/libft.h"
 
-int	key_press(int keycode)
+static int				check_file(int argc, char **argv)
 {
-	ft_putnbr(keycode);
-	return (0);
+	int	fd;
+
+	if (argc != 2)
+	{
+		write(2, "Usage: ./fdf [target_file]\n", 30);
+		exit (-1);
+	}
+	if ((fd = open(argv[1], O_RDONLY)) == -1)
+	{
+		write(2, "Open failed to work with file\n", 30);
+		return (-1);
+	}
+	return (fd);
 }
 
-int main()
+static int	key_press(int keycode)
+{
+	ft_putnbr(keycode);
+	if (keycode == 53)
+		exit(0);
+	return (0);
+}
+int main(int argc, char **argv)
 {
 	void			*mlx_ptr; /* connection login to the graphical server */
 	void			*win_ptr; /* an identifier for the window (MiniLibX can open many) */
@@ -32,10 +52,23 @@ int main()
 	int				colour;
 	unsigned int	x;
 	unsigned int	y;
+	int				fd;
 	
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "Basic Program");
-	image = mlx_new_image(mlx_ptr, 500, 500);
+	if ((fd = check_file(argc, argv)) == -1)
+	{
+		close(fd);
+		exit (0);
+	}
+	check_wireframe(fd);
+	
+	close(fd);
+
+
+	if(!(mlx_ptr = mlx_init())) //Handling for init returning NULL
+		return (0);
+
+	win_ptr = (void *)mlx_new_window(mlx_ptr, 500, 500, "Basic Program");
+	image = (void *)mlx_new_image(mlx_ptr, 500, 500);
 	colour = 0x66023C;
 	x = 0;
 	y = 0;
@@ -54,4 +87,5 @@ int main()
 //	mlx_key_hook(win_ptr, deal_key, (void *)0);
 	mlx_hook(win_ptr, 2, 0, key_press, mlx_ptr);
 	mlx_loop(mlx_ptr); /* asks OS to do thing. This function also does the event management. */
+	
 }
