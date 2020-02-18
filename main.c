@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include "mlx.h"
 #include "libft/libft.h"
+#include "fdf.h"
 
 static int				check_file(int argc, char **argv)
 {
