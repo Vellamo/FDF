@@ -12,6 +12,7 @@
 
 #include "libft/libft.h"
 #include "fdf.h"
+
 /* 
 ** Counts the amount of 'words' from within the input file. 
 */
