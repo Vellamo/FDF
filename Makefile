@@ -18,7 +18,7 @@ LIBFT = ./libft
 MLXINC = $(PREFIX)/include/mlx.h
 MLXLIB = $(PREFIX)/lib/ -lmlx -framework OpenGL -framework AppKit
 
-SRCS = main.c 
+SRCS = main.c check_wireframe.c
 OBJECTS = $(SRCS:.c=.o)
 FLAGS = -Wall -Werror -Wextra
 

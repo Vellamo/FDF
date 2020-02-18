@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
+/* 
+** Counts the amount of 'words' from within the input file. 
+*/
 int	word_count(char *string)
 {
 	int ret_val;
@@ -28,26 +32,35 @@ int	word_count(char *string)
 	return (ret_val);
 }
 
+/* 
+** Function to check the 'width' (x) and 'height' (y) of a map
+** returns a value > 0 if the input is valid, else -1.
+*/
 int	check_wireframe(int fd)
 {
-	int		wire_y;
-	int		wire_x;
-	char	*line;
-	char	**line_array;
-	int		width_check;
+	int			wire_y;
+	int			wire_x;
+	char		*line;
+	int			width_check;
 
 	*line = 0;
 	while ((get_next_line(fd, &line)) != 0)
 	{
 		if ((wire_x = word_count(line)) == 0)
+		{
+			ft_memdel(&line);
 			return (-1);
-		line_array[wire_y] = line;
+		}
 		if (wire_y != 0)
+		{
 			if (width_check != wire_x)
-				return (0);
+			{
+				ft_memdel(&line);
+				return (-1);
+			}
+		}
 		++wire_y;
 		width_check = wire_x;
 	}
-	
-
+	return (width_check);
 }
