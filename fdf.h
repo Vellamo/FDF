@@ -13,14 +13,14 @@
 #ifndef FDF_H
 # define FDF_H
 
-int			check_wireframe(int fd);
+t_wiremap	*check_wireframe(int fd);
 int			word_count(char *string);
 typedef struct s_wiremap
 {
 	unsigned int	x;
 	unsigned int	y;
-	int				*data;
+	int				**map_data;
 }					t_wiremap;
-t_wiremap	*convert_wireframe(int fd);
+t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
 
 #endif

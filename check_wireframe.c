@@ -14,9 +14,19 @@
 #include "fdf.h"
 
 /* 
+** Just initilises the wireframe struct
+*/ 
+static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int height)
+{
+	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
+	wire_map->x = width;
+	wire_map->y = height;
+}
+
+/* 
 ** Counts the amount of 'words' from within the input file. 
 */
-int	word_count(char *string)
+int					word_count(char *string)
 {
 	int ret_val;
 
@@ -38,12 +48,13 @@ int	word_count(char *string)
 ** Function to check the 'width' (x) and 'height' (y) of a map
 ** returns a value >0 if the input is valid, else -1.
 */
-int	check_wireframe(int fd)
+t_wiremap			*check_wireframe(int fd)
 {
 	int			wire_y;
 	int			wire_x;
 	char		*line;
 	int			width_check;
+	t_wiremap	*wire_map;
 
 	wire_y = 0;
 	wire_x = 0;
@@ -53,18 +64,19 @@ int	check_wireframe(int fd)
 		if ((wire_x = word_count(line)) == 0)
 		{
 			ft_memdel((void**)&line);
-			return (-1);
+			return (NULL);
 		}
 		if (wire_y != 0)
 		{
 			if (width_check != wire_x)
 			{
 				ft_memdel((void**)&line);
-				return (-1);
+				return (NULL);
 			}
 		}
 		++wire_y;
 		width_check = wire_x;
 	}
-	return (width_check);
+	wire_map = initialise_wireframe(wire_map, wire_x, wire_y);
+	return (wire_map);
 }

@@ -17,7 +17,7 @@
 #include "libft/libft.h"
 #include "fdf.h"
 
-static int				check_file(int argc, char **argv)
+static int				open_file(int argc, char **argv)
 {
 	int	fd;
 
@@ -29,7 +29,7 @@ static int				check_file(int argc, char **argv)
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
 		write(2, "Open failed to work with file\n", 31);
-		return (-1);
+		exit (-1);
 	}
 	return (fd);
 }
@@ -41,30 +41,25 @@ static int				check_file(int argc, char **argv)
 // 		exit(0);
 // 	return (0);
 // }
+
 int main(int argc, char **argv)
 {
 	int				fd;
+	t_wiremap		*wire_map;
 	
-	if ((fd = check_file(argc, argv)) == -1)
+	wire_map = NULL;
+	fd = open_file(argc, argv);
+	if ((wire_map = check_wireframe(fd)) == NULL)
 	{
-		close(fd);
-		exit (-1);
-	}
-	if (check_wireframe(fd) == -1)
-	{
-		write(2, "Invalid file was given as a parameter!", 39);
+		write(2, "Invalid file was given as a parameter!\n", 40);
 		close(fd);
 		exit (-1);
 	}
 	else
 	{
 		close(fd);
-		if ((fd = open(argv[1], O_RDONLY)) == -1)
-		{	
-			write(2, "Open failed to work with file\n", 31);
-			return (-1);
-		}
-		convert_wireframe(fd);
+		fd = open_file(argc, argv);
+		convert_wireframe(fd, wire_map);
 	}
 	close(fd);
 
