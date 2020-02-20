@@ -17,7 +17,6 @@
 #include <stdlib.h>
 # define WINDOW_HEIGHT 900
 # define WINDOW_WIDTH 1600
-int			word_count(char *string);
 typedef struct s_wiremap
 {
 	unsigned int	width;

@@ -20,29 +20,37 @@ static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int heigh
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
 	wire_map->width = width;
 	wire_map->height = height;
-
+	ft_putnbr(height);
+	wire_map->map_data = (int **)malloc(sizeof(int *) * height);
+	while(height >= 0)
+	{
+		wire_map->map_data[height] = NULL;
+		--height;
+	}
 	return (wire_map);
 }
 
 /* 
 ** Counts the amount of 'words' from within the input file. 
+** Char c is the delimiter
 */
-int					word_count(char *string)
+static int			word_count(char *string, char c)
 {
-	int ret_val;
-
-	ret_val = 0;
-	while (*string != '\0' || *string != '\n')
+	int word_count;
+	int	i;
+	if (!string)
+		return (-1);
+	word_count = (*string == c) ? 0 : 1;
+	i = 0;
+	while (string[i])
 	{
-		if (ft_isascii(*string) == 1)
-		{
-			++ret_val;
-			while (ft_isascii(*(string + 1)) == 1)
-				string++;
-		}
-		string++;
+		while (string[i] == c && (string[(i + 1)] != '\0'))                                                                                     
+			i++;
+		if (string[i] != c && (string[(i + 1)]) == c)
+			++word_count;
+		++i;
 	}
-	return (ret_val);
+	return (word_count);
 }
 
 /* 
@@ -63,7 +71,7 @@ t_wiremap			*check_wireframe(int fd)
 	wire_map = NULL;
 	while ((get_next_line(fd, &line)) != 0)
 	{
-		if ((wire_x = word_count(line)) == 0)
+		if ((wire_x = word_count(line, ' ')) == 0)
 		{
 			ft_memdel((void**)&line);
 			return (NULL);

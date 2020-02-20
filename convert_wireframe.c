@@ -31,7 +31,7 @@ static int	*words_to_int(char *string, int words)
 		int_array[i] = ft_atoi(string_array[i]);
 		++i;
 	}
-	while (string_array)
+	while (--words >= 0)
 		ft_memdel((void **)string_array++);
 	return (int_array);
 }
@@ -44,15 +44,13 @@ t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
 {
 	char			*line;
 	unsigned int	i;
-	int				**map_data;
 	
 	i = 0;
-	map_data = NULL;
 	while ((get_next_line(fd, &line)) != 0)
 	{
-		*map_data[i] = *(words_to_int(line, wire_map->width));
+		wire_map->map_data[i] = words_to_int(line, wire_map->width);
 		++i;
+		ft_memdel((void**)&line);
 	}
-	ft_memdel((void**)&line);
 	return (wire_map);
 }
