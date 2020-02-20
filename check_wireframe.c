@@ -19,8 +19,8 @@
 static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int height)
 {
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
-	wire_map->x = width;
-	wire_map->y = height;
+	wire_map->width = width;
+	wire_map->height = height;
 }
 
 /* 

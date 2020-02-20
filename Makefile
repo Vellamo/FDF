@@ -6,7 +6,7 @@
 #    By: lharvey <lharvey@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/15 11:07:33 by lharvey           #+#    #+#              #
-#    Updated: 2020/02/18 13:17:43 by lharvey          ###   ########.fr        #
+#    Updated: 2020/02/20 15:08:34 by lharvey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT = ./libft
 MLXINC = $(PREFIX)/include/mlx.h
 MLXLIB = $(PREFIX)/lib/ -lmlx -framework OpenGL -framework AppKit
 
-SRCS = main.c check_wireframe.c convert_wireframe.c
+SRCS = main.c check_wireframe.c convert_wireframe.c draw_wireframe.c
 OBJECTS = $(SRCS:.c=.o)
 FLAGS = -Wall -Werror -Wextra -g
 

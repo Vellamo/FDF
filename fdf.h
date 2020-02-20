@@ -13,14 +13,15 @@
 #ifndef FDF_H
 # define FDF_H
 
+# define WINDOW_HEIGHT 900
+# define WINDOW_WIDTH 1600
 t_wiremap	*check_wireframe(int fd);
 int			word_count(char *string);
 typedef struct s_wiremap
 {
-	unsigned int	x;
-	unsigned int	y;
+	unsigned int	width;
+	unsigned int	height;
 	int				**map_data;
 }					t_wiremap;
-t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
-
+t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map);
 #endif
