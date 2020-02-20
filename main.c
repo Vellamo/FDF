@@ -10,11 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include "libft/libft.h"
 #include "fdf.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 static int				open_file(int argc, char **argv)
 {

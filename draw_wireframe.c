@@ -35,7 +35,7 @@ void draw_wireframe()
 	unsigned int	y;
 
 	if(!(mlx_ptr = mlx_init())) //Handling for init returning NULL
-		return (0);
+		exit (-1);
 	win_ptr = (void *)mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Basic Program");
 	image = (void *)mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
 	colour = 0x66023C;
@@ -56,6 +56,5 @@ void draw_wireframe()
 	// mlx_key_hook(win_ptr, deal_key, (void *)0);
 	mlx_hook(win_ptr, 2, 0, key_press, mlx_ptr);
 	mlx_loop(mlx_ptr); /* asks OS to do thing. This function also does the event management. */
-
 }
 

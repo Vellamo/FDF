@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "fdf.h"
-#include <stdlib.h>
 
 /*
 ** Converts a string of words into an array of integers
@@ -49,9 +47,10 @@ t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
 	int				**map_data;
 	
 	i = 0;
+	map_data = NULL;
 	while ((get_next_line(fd, &line)) != 0)
 	{
-		*map_data[i] = words_to_int(line, wire_map->width);
+		*map_data[i] = *(words_to_int(line, wire_map->width));
 		++i;
 	}
 	ft_memdel((void**)&line);

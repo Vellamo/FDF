@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "fdf.h"
 
 /* 
@@ -21,6 +20,8 @@ static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int heigh
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
 	wire_map->width = width;
 	wire_map->height = height;
+
+	return (wire_map);
 }
 
 /* 
@@ -59,6 +60,7 @@ t_wiremap			*check_wireframe(int fd)
 	wire_y = 0;
 	wire_x = 0;
 	width_check = 0;
+	wire_map = NULL;
 	while ((get_next_line(fd, &line)) != 0)
 	{
 		if ((wire_x = word_count(line)) == 0)

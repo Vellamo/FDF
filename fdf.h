@@ -13,9 +13,10 @@
 #ifndef FDF_H
 # define FDF_H
 
+#include "libft/libft.h"
+#include <stdlib.h>
 # define WINDOW_HEIGHT 900
 # define WINDOW_WIDTH 1600
-t_wiremap	*check_wireframe(int fd);
 int			word_count(char *string);
 typedef struct s_wiremap
 {
@@ -23,5 +24,7 @@ typedef struct s_wiremap
 	unsigned int	height;
 	int				**map_data;
 }					t_wiremap;
+t_wiremap	*check_wireframe(int fd);
 t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map);
+void draw_wireframe();
 #endif
