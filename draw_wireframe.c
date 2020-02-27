@@ -50,43 +50,44 @@ void 			draw_wireframe(t_wiremap *wire_map)
 	unsigned int	x;
 	unsigned int	y;
 	t_mlx			*mlx_data;
+	unsigned int	multiplier;
 
 	mlx_data = (t_mlx*)malloc(sizeof(t_mlx));
 	initialise_minilibx(mlx_data);
 	colour = 0xAA023C;
 	x = 0;
 	y = 0;
+	multiplier = 50;
 /* Some potential project types: 
 ** AXONOMETRIC - ISOMETRIC
 ** OBLIQUE - CAVALIER
 ** OBLIQUE - MILITARY
 ** PERSPECTIVE - 1 Point
 */
-ft_putnbr(wire_map->height);
-ft_putchar('\n');
-ft_putnbr(wire_map->width);
-while (x != wire_map->width && y != wire_map->height)
+
+while (x <= (wire_map->width * multiplier) && y <= (wire_map->height * multiplier))
 {
-	while (x != wire_map->width)
+	if (y % multiplier == 0)
+	{
+		while (x <= (wire_map->width * multiplier))
+		{
+			mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
+			++x;
+		}
+		x = 0;
+	}
+	while (x <= (wire_map->width * multiplier))
 	{
 		mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
-		++x;
+		x += multiplier;
 	}
-	if (y != wire_map->height)
+	if (y <= (wire_map->height * multiplier))
 	{
 		++y;
 		x = 0;
 	}
 }
-/* Line function retired whilst I work on printing the wire_map
-while (y >= 0 && y <= 899 && x >= 0 && x <= 899) 
-{
-   	mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
-	++x;
-	++y;
-}
-*/
-	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 0, 0);
+	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 100, 100);
 	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);
 	mlx_loop(mlx_data->mlx_ptr); /* asks OS to do thing. This function also does the event management. */
 }
