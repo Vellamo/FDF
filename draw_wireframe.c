@@ -13,7 +13,7 @@
 #include "mlx.h"
 #include "fdf.h"
 
-static int	key_press(int keycode)
+static int		key_press(int keycode)
 {
 	ft_putnbr(keycode);
 	if (keycode == 53)
@@ -31,42 +31,45 @@ static int	key_press(int keycode)
 	// D: 2
 }
 
-t_mlx	initialise_minilibx()
+static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 {
-	t_mlx	mlx_data;
-
 	if(!(mlx_data->mlx_ptr = mlx_init())) //Handling for init returning NULL
 		exit (-1);
-	if (!(mlx_data->win_ptr = (void *)mlx_new_window(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Hive_Wireframe")))
+	if (!(mlx_data->win_ptr = (void *)mlx_new_window(mlx_data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Hive_Wireframe")))
 		exit (-1);
-	if (!(mlx_data->mlx_image = (void *)mlx_new_image(mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT)))
+	if (!(mlx_data->mlx_image = (void *)mlx_new_image(mlx_data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT)))
 		exit (-1);
-	mlx_data->buffer_32bit = (int *)mlx_get_data_addr(mlx_image, &pixel_bits, &line_bytes, &endian);
+	mlx_data->buffer_32bit = (int *)mlx_get_data_addr(mlx_data->mlx_image, &(mlx_data->pixel_bits), &(mlx_data->line_bytes), &(mlx_data->endian));
 	mlx_data->line_bytes /= 4;
 
 	return (mlx_data);
 }
 
-void draw_wireframe(t_wiremap *wire_map)
+void 			draw_wireframe(t_wiremap *wire_map)
 {
 	int				colour;
 	unsigned int	x;
 	unsigned int	y;
-	t_mlx			mlx_data;
+	t_mlx			*mlx_data;
 
-	mlx_data = initialise_minilibx;
+	mlx_data = (t_mlx*)malloc(sizeof(t_mlx));
+	initialise_minilibx(mlx_data);
 	colour = 0xAA023C;
 	x = 0;
 	y = 0;
+
+	++wire_map;
+	--wire_map;
+
 	while (y >= 0 && y <= 500 && x >= 0 && x <= 500)
 	{
-    	buffer_32bit[(y * line_bytes) + x] = colour;
+    	mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
 		++x;
 		++y;
 	}
-	mlx_put_image_to_window(mlx_ptr, win_ptr, image, 0, 0);
+	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 0, 0);
 	// mlx_key_hook(win_ptr, deal_key, (void *)0);
-	mlx_hook(win_ptr, 2, 0, key_press, mlx_ptr);
-	mlx_loop(mlx_ptr); /* asks OS to do thing. This function also does the event management. */
+	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);
+	mlx_loop(mlx_data->mlx_ptr); /* asks OS to do thing. This function also does the event management. */
 }
 
