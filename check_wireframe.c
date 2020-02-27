@@ -20,7 +20,6 @@ static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int heigh
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
 	wire_map->width = width;
 	wire_map->height = height;
-	ft_putnbr(height);
 	wire_map->map_data = (int **)malloc(sizeof(int *) * height);
 	while(height >= 0)
 	{
@@ -41,7 +40,7 @@ static int			word_count(char *string, char c)
 	if (!string)
 		return (-1);
 	word_count = (*string == c) ? 0 : 1;
-	i = 0;
+	i = (word_count == 0) ? 0 : 1;
 	while (string[i])
 	{
 		while (string[i] == c && (string[(i + 1)] != '\0'))                                                                                     

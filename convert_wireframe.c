@@ -50,7 +50,8 @@ t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
 	{
 		wire_map->map_data[i] = words_to_int(line, wire_map->width);
 		++i;
-		ft_memdel((void**)&line);
+		free(line);
+		*line = '\0';
 	}
 	return (wire_map);
 }

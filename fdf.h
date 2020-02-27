@@ -25,5 +25,15 @@ typedef struct s_wiremap
 }					t_wiremap;
 t_wiremap	*check_wireframe(int fd);
 t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map);
-void draw_wireframe();
+void draw_wireframe(t_wiremap *wire_map);
+typedef struct s_mlx
+{
+	void			*mlx_ptr; /* connection login to the graphical server */
+	void			*win_ptr; /* an identifier for the window (MiniLibX can open many) */
+	void			*mlx_image; /* An image that can be given to the window */
+	int				pixel_bits;
+	int				line_bytes;
+	int				endian;
+	int				*buffer_32bit;
+}					t_mlx;
 #endif

@@ -51,5 +51,5 @@ int main(int argc, char **argv)
 		convert_wireframe(fd, wire_map);
 	}
 	close(fd);
-	draw_wireframe();
+	draw_wireframe(wire_map);
 }
