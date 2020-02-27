@@ -36,13 +36,21 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 		exit (-1);
 	if (!(mlx_data->win_ptr = (void *)mlx_new_window(mlx_data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "Hive_Wireframe")))
 		exit (-1);
-	if (!(mlx_data->mlx_image = (void *)mlx_new_image(mlx_data->mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT)))
+	if (!(mlx_data->mlx_image = (void *)mlx_new_image(mlx_data->mlx_ptr, WINDOW_WIDTH * 2, WINDOW_HEIGHT * 2)))
 		exit (-1);
-	mlx_data->buffer_32bit = (int *)mlx_get_data_addr(mlx_data->mlx_image, &(mlx_data->pixel_bits), &(mlx_data->line_bytes), &(mlx_data->endian));
-	mlx_data->line_bytes /= 4;
+	mlx_data->buffer_32bit = (int *)mlx_get_data_addr(mlx_data->mlx_image, &(mlx_data->pixel_bits), &(mlx_data->line_pixels), &(mlx_data->endian));
+	mlx_data->line_pixels /= 4;
 
 	return (mlx_data);
 }
+
+/* Some potential project types: 
+** AXONOMETRIC - ISOMETRIC (SSR30?)
+** OBLIQUE - CAVALIER
+** OBLIQUE - MILITARY
+** PERSPECTIVE - 1(2?) Point
+** DIMETRIC 1:2 
+*/
 
 void 			draw_wireframe(t_wiremap *wire_map)
 {
@@ -58,12 +66,7 @@ void 			draw_wireframe(t_wiremap *wire_map)
 	x = 0;
 	y = 0;
 	multiplier = 50;
-/* Some potential project types: 
-** AXONOMETRIC - ISOMETRIC
-** OBLIQUE - CAVALIER
-** OBLIQUE - MILITARY
-** PERSPECTIVE - 1 Point
-*/
+
 
 while (x <= (wire_map->width * multiplier) && y <= (wire_map->height * multiplier))
 {
@@ -71,14 +74,14 @@ while (x <= (wire_map->width * multiplier) && y <= (wire_map->height * multiplie
 	{
 		while (x <= (wire_map->width * multiplier))
 		{
-			mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
+			mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
 			++x;
 		}
 		x = 0;
 	}
 	while (x <= (wire_map->width * multiplier))
 	{
-		mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
+		mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
 		x += multiplier;
 	}
 	if (y <= (wire_map->height * multiplier))

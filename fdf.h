@@ -32,7 +32,7 @@ typedef struct s_mlx
 	void			*win_ptr; /* an identifier for the window (MiniLibX can open many) */
 	void			*mlx_image; /* An image that can be given to the window */
 	int				pixel_bits;
-	int				line_bytes;
+	int				line_pixels;
 	int				endian;
 	int				*buffer_32bit;
 }					t_mlx;
