@@ -18,7 +18,6 @@ static int		key_press(int keycode)
 	ft_putnbr(keycode);
 	if (keycode == 53)
 		exit(0);
-
 	return (0);
 	// UP: 126
 	// RIGHT: 124
@@ -57,18 +56,37 @@ void 			draw_wireframe(t_wiremap *wire_map)
 	colour = 0xAA023C;
 	x = 0;
 	y = 0;
-
-	++wire_map;
-	--wire_map;
-
-	while (y >= 0 && y <= 500 && x >= 0 && x <= 500)
+/* Some potential project types: 
+** AXONOMETRIC - ISOMETRIC
+** OBLIQUE - CAVALIER
+** OBLIQUE - MILITARY
+** PERSPECTIVE - 1 Point
+*/
+ft_putnbr(wire_map->height);
+ft_putchar('\n');
+ft_putnbr(wire_map->width);
+while (x != wire_map->width && y != wire_map->height)
+{
+	while (x != wire_map->width)
 	{
-    	mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
+		mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
 		++x;
-		++y;
 	}
+	if (y != wire_map->height)
+	{
+		++y;
+		x = 0;
+	}
+}
+/* Line function retired whilst I work on printing the wire_map
+while (y >= 0 && y <= 899 && x >= 0 && x <= 899) 
+{
+   	mlx_data->buffer_32bit[(y * mlx_data->line_bytes) + x] = colour;
+	++x;
+	++y;
+}
+*/
 	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 0, 0);
-	// mlx_key_hook(win_ptr, deal_key, (void *)0);
 	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);
 	mlx_loop(mlx_data->mlx_ptr); /* asks OS to do thing. This function also does the event management. */
 }
