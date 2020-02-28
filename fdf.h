@@ -18,16 +18,22 @@
 #include <math.h>
 # define WINDOW_HEIGHT 900
 # define WINDOW_WIDTH 1600
-typedef struct s_wiremap
+typedef struct	s_projection
+{
+	int				x;
+	int				y;
+	int				z;
+}					t_projection;
+typedef struct	s_wiremap
 {
 	unsigned int	width;
 	unsigned int	height;
-	int				**map_z;
+	t_projection	**map_prj;
 }					t_wiremap;
 t_wiremap	*check_wireframe(int fd);
 t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map);
 void draw_wireframe(t_wiremap *wire_map);
-typedef struct s_mlx
+typedef struct	s_mlx
 {
 	void			*mlx_ptr; /* connection login to the graphical server */
 	void			*win_ptr; /* an identifier for the window (MiniLibX can open many) */
@@ -37,10 +43,5 @@ typedef struct s_mlx
 	int				endian;
 	int				*buffer_32bit;
 }					t_mlx;
-typedef struct s_projection
-{
-	int				x;
-	int				y;
-	
-}				t_projection;
+
 #endif

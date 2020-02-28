@@ -15,25 +15,23 @@
 /*
 ** Converts a string of words into an array of integers
 */ 
-static int	*words_to_int(char *string, int words)	
+static void	*words_to_int(char *string, int words, t_projection *t_coordinates)	
 {
 	char	**string_array;
-	int		*int_array;
-	int		i;
+	int		x;
 	
-	if (!string || !words)
+	if (!string || !words || !t_coordinates)
 		return (0);
-	i = 0;
+	x = 0;
 	string_array = ft_strsplit(string, ' ');
-	int_array = (int*)malloc(sizeof(int) * words);
-	while (i != words)
+	while (x != words)
 	{
-		int_array[i] = ft_atoi(string_array[i]);
-		++i;
+		t_coordinates[x].z = ft_atoi(string_array[x]);
+		++x;
 	}
 	while (--words >= 0)
 		ft_memdel((void **)string_array++);
-	return (int_array);
+	return ;
 }
 
 /* 
@@ -43,13 +41,13 @@ static int	*words_to_int(char *string, int words)
 t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map)
 {
 	char			*line;
-	unsigned int	i;
+	unsigned int	y;
 	
-	i = 0;
+	y = 0;
 	while ((get_next_line(fd, &line)) != 0)
 	{
-		wire_map->map_z[i] = words_to_int(line, wire_map->width);
-		++i;
+		words_to_int(line, wire_map->width, wire_map->map_prj[y]);
+		++y;
 		free(line);
 		*line = '\0';
 	}

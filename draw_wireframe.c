@@ -44,15 +44,11 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 	return (mlx_data);
 }
 
-/* Some potential project types: 
-** AXONOMETRIC - ISOMETRIC (SSR30?)
-** DIMETRIC 1:2 
-** OBLIQUE - CAVALIER
-** OBLIQUE - MILITARY
-** PERSPECTIVE - 1(2?) Point
+/*
+** An initial attempt at creating an ISOMETRIC (30 degree) perspective projection
 */
 
-static void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+static void		draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
 {
 	unsigned int	x;
 	unsigned int	y;
@@ -83,23 +79,44 @@ static void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, un
 	}
 }
 
-static void			draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+/*
+** Basic function for drawing a grid, depending on the input width and height
+*/
+
+static void		draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
 {
-	int z;
-	int x;
-	int y;
-	int i;
-
-	z = 0;
-	y = 0;
-	x = 0;
-
-	y -= (sqrt(3/2));
-	x += (M_SQRT2 / 2); 
-
+	int 			coor_x;
+	int				coor_y;
+	
+	coor_y = 0;
+	coor_x = 0;
+	while (coor_x <= (wire_map->width) && coor_y <= (wire_map->height))
+	{
+		while (coor_x <= (wire_map->width))
+		{
+			wire_map->map_prj[coor_y][coor_x].x = (coor_x - coor_y) * (M_SQRT2 / 2);
+			wire_map->map_prj[coor_y][coor_x].y = (sqrt(3 / 2) - ((coor_x + coor_y) * (1/(sqrt(6)))));
+			++coor_x;
+		}
+		coor_x = 0;
+		++coor_y;
+	}
 }
 
-static void 			draw_wireframe(t_wiremap *wire_map)
+/* Some potential project types: 
+** AXONOMETRIC - ISOMETRIC (SSR30?)
+** DIMETRIC 1:2 
+** OBLIQUE - CAVALIER
+** OBLIQUE - MILITARY
+** PERSPECTIVE - 1(2?) Point
+*/
+
+/* 
+** mlx loop : asks OS to do thing. This function also does the event management.
+** mlx hook : depending on arguement, hooks certain input.
+*/ 
+
+static void 	draw_wireframe(t_wiremap *wire_map)
 {
 	int				colour;
 	t_mlx			*mlx_data;
@@ -110,11 +127,11 @@ static void 			draw_wireframe(t_wiremap *wire_map)
 	colour = 0xAA023C;
 	multiplier = 50;
 
-//	draw_parallel(wire_map, mlx_data, colour, multiplier);
+//	draw_parallel(wire_map, mlx_data, colour, multiplier);  Removed during testing.
 	draw_isometric(wire_map, mlx_data, colour, multiplier);
 
 	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 100, 100);
 	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);
-	mlx_loop(mlx_data->mlx_ptr); /* asks OS to do thing. This function also does the event management. */
+	mlx_loop(mlx_data->mlx_ptr); 
 }
 

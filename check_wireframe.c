@@ -13,18 +13,30 @@
 #include "fdf.h"
 
 /* 
-** Just initilises the wireframe struct
+** Just initilises the wireframe struct. We allocate basic X and Y values
+** however, these aren't ever accessed. They are modified later... 
 */ 
 static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int height)
 {
+	int x;
+	int y;
+
+	x = -1;
+	y = 0;
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
 	wire_map->width = width;
 	wire_map->height = height;
-	wire_map->map_z = (int **)malloc(sizeof(int *) * height);
-	while(height >= 0)
+	wire_map->map_prj = (t_projection **)malloc(sizeof(t_projection *) * (height * width));
+	while(x <= width && y <= height)
 	{
-		wire_map->map_z[height] = NULL;
-		--height;
+		while (++x <= width)
+		{
+			wire_map->map_prj[height][width].x = x;
+			wire_map->map_prj[height][width].y = y;
+			wire_map->map_prj[height][width].z = 0;
+		}
+		x = -1;
+		++y; 
 	}
 	return (wire_map);
 }
