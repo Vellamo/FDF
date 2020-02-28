@@ -46,50 +46,56 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 
 /* Some potential project types: 
 ** AXONOMETRIC - ISOMETRIC (SSR30?)
+** DIMETRIC 1:2 
 ** OBLIQUE - CAVALIER
 ** OBLIQUE - MILITARY
 ** PERSPECTIVE - 1(2?) Point
-** DIMETRIC 1:2 
 */
+
+void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+{
+	unsigned int	x;
+	unsigned int	y;
+
+	x = 0;
+	y = 0;
+	while (x <= (wire_map->width * multiplier) && y <= (wire_map->height * multiplier))
+	{
+		if (y % multiplier == 0)
+		{
+			while (x <= (wire_map->width * multiplier))
+			{
+				mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
+				++x;
+			}
+			x = 0;
+		}
+		while (x <= (wire_map->width * multiplier))
+		{
+			mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
+			x += multiplier;
+		}
+		if (y <= (wire_map->height * multiplier))
+		{
+			++y;
+			x = 0;
+		}
+	}
+}
 
 void 			draw_wireframe(t_wiremap *wire_map)
 {
 	int				colour;
-	unsigned int	x;
-	unsigned int	y;
 	t_mlx			*mlx_data;
 	unsigned int	multiplier;
 
 	mlx_data = (t_mlx*)malloc(sizeof(t_mlx));
 	initialise_minilibx(mlx_data);
 	colour = 0xAA023C;
-	x = 0;
-	y = 0;
 	multiplier = 50;
 
+	draw_parallel(wire_map, mlx_data, colour, multiplier);
 
-while (x <= (wire_map->width * multiplier) && y <= (wire_map->height * multiplier))
-{
-	if (y % multiplier == 0)
-	{
-		while (x <= (wire_map->width * multiplier))
-		{
-			mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
-			++x;
-		}
-		x = 0;
-	}
-	while (x <= (wire_map->width * multiplier))
-	{
-		mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
-		x += multiplier;
-	}
-	if (y <= (wire_map->height * multiplier))
-	{
-		++y;
-		x = 0;
-	}
-}
 	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 100, 100);
 	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);
 	mlx_loop(mlx_data->mlx_ptr); /* asks OS to do thing. This function also does the event management. */

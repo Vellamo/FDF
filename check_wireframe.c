@@ -20,10 +20,10 @@ static t_wiremap	*initialise_wireframe(t_wiremap *wire_map, int width, int heigh
 	wire_map = (t_wiremap*)malloc(sizeof(t_wiremap));
 	wire_map->width = width;
 	wire_map->height = height;
-	wire_map->map_data = (int **)malloc(sizeof(int *) * height);
+	wire_map->map_z = (int **)malloc(sizeof(int *) * height);
 	while(height >= 0)
 	{
-		wire_map->map_data[height] = NULL;
+		wire_map->map_z[height] = NULL;
 		--height;
 	}
 	return (wire_map);

@@ -25,7 +25,7 @@ FLAGS = -Wall -Werror -Wextra -g
 all: $(NAME)
 
 $(NAME):
-	make -C $(LIBFT)
+	@make -C $(LIBFT)
 	@gcc $(FLAGS) -I $(MLXINC) -L $(MLXLIB) $(SRCS) $(LIBFT)/libft.a -o $(NAME)
 
 .PHONY: clean fclean re
