@@ -52,7 +52,7 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 ** PERSPECTIVE - 1(2?) Point
 */
 
-void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+static void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
 {
 	unsigned int	x;
 	unsigned int	y;
@@ -83,7 +83,23 @@ void			draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned 
 	}
 }
 
-void 			draw_wireframe(t_wiremap *wire_map)
+static void			draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+{
+	int z;
+	int x;
+	int y;
+	int i;
+
+	z = 0;
+	y = 0;
+	x = 0;
+
+	y -= (sqrt(3/2));
+	x += (M_SQRT2 / 2); 
+
+}
+
+static void 			draw_wireframe(t_wiremap *wire_map)
 {
 	int				colour;
 	t_mlx			*mlx_data;
@@ -94,7 +110,8 @@ void 			draw_wireframe(t_wiremap *wire_map)
 	colour = 0xAA023C;
 	multiplier = 50;
 
-	draw_parallel(wire_map, mlx_data, colour, multiplier);
+//	draw_parallel(wire_map, mlx_data, colour, multiplier);
+	draw_isometric(wire_map, mlx_data, colour, multiplier);
 
 	mlx_put_image_to_window(mlx_data->mlx_ptr, mlx_data->win_ptr, mlx_data->mlx_image, 100, 100);
 	mlx_hook(mlx_data->win_ptr, 2, 0, key_press, mlx_data->mlx_ptr);

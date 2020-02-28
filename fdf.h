@@ -37,4 +37,10 @@ typedef struct s_mlx
 	int				endian;
 	int				*buffer_32bit;
 }					t_mlx;
+typedef struct s_projection
+{
+	int				x;
+	int				y;
+	
+}				t_projection;
 #endif
