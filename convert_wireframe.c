@@ -15,13 +15,13 @@
 /*
 ** Converts a string of words into an array of integers
 */ 
-static void	*words_to_int(char *string, int words, t_projection *t_coordinates)	
+static void	words_to_int(char *string, int words, t_projection *t_coordinates)	
 {
 	char	**string_array;
 	int		x;
 	
 	if (!string || !words || !t_coordinates)
-		return (0);
+		return ;
 	x = 0;
 	string_array = ft_strsplit(string, ' ');
 	while (x != words)

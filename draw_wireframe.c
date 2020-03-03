@@ -44,14 +44,29 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 	return (mlx_data);
 }
 
-/*
-** An initial attempt at creating an ISOMETRIC (30 degree) perspective projection
-*/
+/* Bresenheim psuedocode */
 
-static void		draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+// static void		bresenheim_algo()
+// {
+// 	function line(x0, y0, x1, y1)
+//     real deltax := x1 - x0
+//     real deltay := y1 - y0
+//     real deltaerr := abs(deltay / deltax)    // Assume deltax != 0 (line is not vertical),
+//           // note that this division needs to be done in a way that preserves the fractional part
+//     real error := 0.0 // No error at start
+//     int y := y0
+//     for x from x0 to x1 
+//         plot(x, y)
+//         error := error + deltaerr
+//         if error ≥ 0.5 then
+//             y := y + sign(deltay) * 1
+//             error := error - 1.0
+// }
+
+static void		draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, int multiplier)
 {
-	unsigned int	x;
-	unsigned int	y;
+	int		x;
+	int		y;
 
 	x = 0;
 	y = 0;
@@ -83,7 +98,7 @@ static void		draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, uns
 ** Basic function for drawing a grid, depending on the input width and height
 */
 
-static void		draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, unsigned int multiplier)
+static void		draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, int multiplier)
 {
 	int 			coor_x;
 	int				coor_y;
@@ -116,11 +131,11 @@ static void		draw_isometric(t_wiremap *wire_map, t_mlx *mlx_data, int colour, un
 ** mlx hook : depending on arguement, hooks certain input.
 */ 
 
-static void 	draw_wireframe(t_wiremap *wire_map)
+void 	draw_wireframe(t_wiremap *wire_map)
 {
 	int				colour;
 	t_mlx			*mlx_data;
-	unsigned int	multiplier;
+	int				multiplier;
 
 	mlx_data = (t_mlx*)malloc(sizeof(t_mlx));
 	initialise_minilibx(mlx_data);

@@ -26,8 +26,8 @@ typedef struct	s_projection
 }					t_projection;
 typedef struct	s_wiremap
 {
-	unsigned int	width;
-	unsigned int	height;
+	int				width;
+	int				height;
 	t_projection	**map_prj;
 }					t_wiremap;
 t_wiremap	*check_wireframe(int fd);
