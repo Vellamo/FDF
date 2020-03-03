@@ -46,22 +46,45 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 
 /* Bresenheim psuedocode */
 
-// static void		bresenheim_algo()
-// {
-// 	function line(x0, y0, x1, y1)
-//     real deltax := x1 - x0
-//     real deltay := y1 - y0
-//     real deltaerr := abs(deltay / deltax)    // Assume deltax != 0 (line is not vertical),
-//           // note that this division needs to be done in a way that preserves the fractional part
-//     real error := 0.0 // No error at start
-//     int y := y0
-//     for x from x0 to x1 
-//         plot(x, y)
-//         error := error + deltaerr
-//         if error ≥ 0.5 then
-//             y := y + sign(deltay) * 1
-//             error := error - 1.0
-// }
+static void		bresenheim_algo(t_wiremap *wire_map, t_mlx *mlx_data)
+{
+//	function line(x0, y0, x1, y1)
+	int	i;
+	int	x;
+	int y;
+	int	delta_x;
+	int delta_y;
+	int	delta_err;
+	int	error;
+
+	delta_x = 0;
+	delta_y = 0;
+	delta_err = 0;
+	error = 0;
+	x = 0;
+	y = 0;
+
+//	real deltax := x1 - x0
+//	real deltay := y1 - y0
+	delta_x = wire_map->map_prj[y][x].x - wire_map->map_prj[y + 1][x].x;
+	delta_y = wire_map->map_prj[y][x].y - wire_map->map_prj[y + 1][x].y;
+ 
+//	real deltaerr := abs(deltay / deltax)    // Assume deltax != 0 (line is not vertical),
+          // note that this division needs to be done in a way that preserves the fractional part
+	delta_err = abs(delta_y / delta_x);
+//	int y := y0
+	y = wire_map->map_prj[y][x].y;
+
+// for x from x0 to x1 
+	while (wire_map->map_prj[y][x].x != wire_map->map_prj[y + 1][x].x)
+	{
+//     plot(x, y)
+//     error := error + deltaerr
+//     if error ≥ 0.5 then
+//         y := y + sign(deltay) * 1
+//         error := error - 1.0
+	}
+}
 
 static void		draw_parallel(t_wiremap *wire_map, t_mlx *mlx_data, int colour, int multiplier)
 {
