@@ -46,7 +46,7 @@ static t_mlx	*initialise_minilibx(t_mlx *mlx_data)
 
 /* Bresenheim psuedocode */
 
-static void		bresenheim_algo(t_wiremap *wire_map, t_mlx *mlx_data)
+static void		bresenheim_algo(t_mlx *mlx_data, t_projection *point_src, t_projection *point_dst, int colour)
 {
 //	function line(x0, y0, x1, y1)
 	int	i;
@@ -54,35 +54,62 @@ static void		bresenheim_algo(t_wiremap *wire_map, t_mlx *mlx_data)
 	int y;
 	int	delta_x;
 	int delta_y;
-	int	delta_err;
-	int	error;
-
+	int	signal_x;
+	int	signal_y;
+	int	error_x;
+	int	error_y;
+	
 	delta_x = 0;
 	delta_y = 0;
-	delta_err = 0;
-	error = 0;
+	signal_x = 0;
+	signal_y = 0;
+	error_x = 0;
+	error_y = 0;
 	x = 0;
 	y = 0;
 
-//	real deltax := x1 - x0
-//	real deltay := y1 - y0
-	delta_x = wire_map->map_prj[y][x].x - wire_map->map_prj[y + 1][x].x;
-	delta_y = wire_map->map_prj[y][x].y - wire_map->map_prj[y + 1][x].y;
- 
-//	real deltaerr := abs(deltay / deltax)    // Assume deltax != 0 (line is not vertical),
-          // note that this division needs to be done in a way that preserves the fractional part
-	delta_err = abs(delta_y / delta_x);
-//	int y := y0
-	y = wire_map->map_prj[y][x].y;
+// BRESENHEIM PSUEDOCODE : 
+// plotLine(int x0, int y0, int x1, int y1)
+//     dx =  abs(x1-x0);
+//     sx = x0<x1 ? 1 : -1;
+//     dy = -abs(y1-y0);
+//     sy = y0<y1 ? 1 : -1;
+//     err = dx+dy;  /* error value e_xy */
+	delta_x = abs(point_src->x - point_dst->x);
+	signal_x = (point_src->x < point_dst->x) ? 1 : -1;
+	delta_y = abs(point_src->y - point_dst->y);
+	signal_y = (point_src->y < point_dst->y) ? 1 : -1;
+ 	error_x = (delta_x > delta_y ? delta_x : -delta_y) / 2;
+	x = point_src->x;
+	y = point_src->y;
 
-// for x from x0 to x1 
-	while (wire_map->map_prj[y][x].x != wire_map->map_prj[y + 1][x].x)
+//     while (true)   /* loop */
+//         plot(x0, y0);
+//         if (x0==x1 && y0==y1) break;
+//         e2 = 2*err;
+//         if (e2 >= dy) 
+//             err += dy; /* e_xy+e_x > 0 */
+//             x0 += sx;
+//         end if
+//         if (e2 <= dx) /* e_xy+e_y < 0 */
+//             err += dx;
+//             y0 += sy;
+//         end if
+//     end while
+	while (x != point_dst->x || y != point_dst->y)
 	{
-//     plot(x, y)
-//     error := error + deltaerr
-//     if error ≥ 0.5 then
-//         y := y + sign(deltay) * 1
-//         error := error - 1.0
+		mlx_data->buffer_32bit[(y * mlx_data->line_pixels) + x] = colour;
+		error_y = error_x;
+		if (error_y > -delta_x)
+		{
+			error_x -= delta_y;
+			x += signal_x;
+		}
+		if (error_y < delta_y)
+		{
+			error_x += delta_x;
+			y += signal_y;
+		}
 	}
 }
 

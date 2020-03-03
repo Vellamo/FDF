@@ -23,13 +23,13 @@ typedef struct	s_projection
 	int				x;
 	int				y;
 	int				z;
-}					t_projection;
+}				t_projection;
 typedef struct	s_wiremap
 {
 	int				width;
 	int				height;
 	t_projection	**map_prj;
-}					t_wiremap;
+}				t_wiremap;
 t_wiremap	*check_wireframe(int fd);
 t_wiremap	*convert_wireframe(int fd, t_wiremap *wire_map);
 void draw_wireframe(t_wiremap *wire_map);
@@ -42,6 +42,15 @@ typedef struct	s_mlx
 	int				line_pixels;
 	int				endian;
 	int				*buffer_32bit;
-}					t_mlx;
+}				t_mlx;
+typedef	struct	s_bresenheim
+{
+	int	delta_x;
+	int delta_y;
+	int	signal_x;
+	int	signal_y;
+	int	error_x;
+	int	error_y;
+}					t_bresenheim;
 
 #endif
